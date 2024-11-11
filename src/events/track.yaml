@@ -1,0 +1,63 @@
+http.post./event-tracking:
+  summary: 'Track SendGrid Events'
+  description: 'Endpoint to track multiple email events from SendGrid in a single request'
+  fn: track
+  authn: false
+  body:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            required:
+              - sg_message_id
+              - email
+              - event
+              - timestamp
+            properties:
+              sg_message_id:
+                type: string
+                description: 'Unique identifier for the SendGrid message'
+              email:
+                type: string
+                format: email
+                description: 'Recipient email address'
+              event:
+                type: string
+                description: 'Event type (processed, delivered, open, click, bounce)'
+                enum: ['processed', 'delivered', 'open', 'click', 'bounce']
+              timestamp:
+                type: integer
+                description: 'Unix timestamp of the event'
+  responses:
+    200:
+      description: 'Events tracked successfully'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Events tracked successfully.'
+    400:
+      description: 'Bad request - Missing or invalid fields'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Invalid request body: missing required fields.'
+    500:
+      description: 'Internal server error'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Failed to process events.'

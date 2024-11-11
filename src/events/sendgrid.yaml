@@ -1,0 +1,60 @@
+http.post./send-mail:
+  summary: 'Send mail'
+  description: 'Endpoint to send a mail to a mail address'
+  fn: sendMail
+  authn: false
+  body:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            to:
+              type: string
+              format: email
+              description: 'Recipient email address'
+            subject:
+              type: string
+              description: 'Email subject'
+            text:
+              type: string
+              description: 'Plain text content of the email'
+            html:
+              type: string
+              description: 'HTML content of the email'
+            from:
+              type: string
+              format: email
+              description: 'Sender email address'
+          required: ['to', 'subject', 'text', 'html']
+  responses:
+    200:
+      description: 'Email sent successfully'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Email sent successfully.'
+    400:
+      description: 'Bad request - Missing or invalid fields'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Invalid request body: missing or invalid fields.'
+    500:
+      description: 'Internal server error'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Failed to send email.'

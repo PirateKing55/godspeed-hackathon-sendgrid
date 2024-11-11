@@ -1,0 +1,4 @@
+type: track
+sheetId: <%process.env.GOOGLE_SHEET_ID%>
+keyFile: <%process.env.GOOGLE_CREDENTIAL_FILE_PATH%>
+worksheetName: <%process.env.GOOGLE_WORKSHEET_NAME%>
